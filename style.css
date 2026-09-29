@@ -1,0 +1,1440 @@
+:root {
+
+    --background: #0b0f10;
+
+    --surface: #151b1d;
+
+    --surface-elevated: #1d2527;
+
+    --primary: #2ec4b6;
+
+    --primary-bright: #5fe3d4;
+
+    --primary-muted: #237c74;
+
+    --text: #f2f5f4;
+
+    --text-secondary: #9ba8a8;
+
+    --border: #2a3537;
+
+    --font-main: "IBM Plex Sans", sans-serif;
+
+    --font-mono: "JetBrains Mono", monospace;
+
+}
+
+* {
+
+    box-sizing: border-box;
+
+    margin: 0;
+
+    padding: 0;
+
+}
+
+html {
+
+    min-height: 100%;
+
+    background: var(--background);
+
+}
+
+body {
+
+    min-height: 100vh;
+
+    overflow-x: hidden;
+
+    background:
+
+        radial-gradient(
+
+            circle at 50% 10%,
+
+            rgba(46, 196, 182, 0.07),
+
+            transparent 55%
+
+        ),
+
+        var(--background);
+
+    color: var(--text);
+
+    font-family: var(--font-main);
+
+}
+
+button,
+
+a {
+
+    font: inherit;
+
+}
+
+button {
+
+    border: 0;
+
+    cursor: pointer;
+
+}
+
+a {
+
+    color: inherit;
+
+    text-decoration: none;
+
+}
+
+/* --------------------------------
+   Background
+-------------------------------- */
+
+.background-glow {
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: -1;
+
+    background:
+
+        radial-gradient(
+
+            circle at 50% 25%,
+
+            rgba(46, 196, 182, 0.035),
+
+            transparent 40%
+
+        );
+
+}
+
+/* --------------------------------
+   Header
+-------------------------------- */
+
+.site-header {
+
+    height: 72px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 42px;
+
+    border-bottom: 1px solid rgba(42, 53, 55, 0.7);
+
+    background: rgba(11, 15, 16, 0.88);
+
+    backdrop-filter: blur(12px);
+
+}
+
+.logo {
+
+    display: flex;
+
+    align-items: center;
+
+    font-size: 21px;
+
+    font-weight: 700;
+
+    letter-spacing: -0.04em;
+
+}
+
+.logo span {
+
+    color: var(--text);
+
+}
+
+.logo strong {
+
+    color: var(--primary);
+
+}
+
+.main-nav {
+
+    display: flex;
+
+    gap: 32px;
+
+    margin-left: auto;
+
+    margin-right: 28px;
+
+}
+
+.main-nav a {
+
+    position: relative;
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    transition: color 160ms ease;
+
+}
+
+.main-nav a:hover,
+
+.main-nav a.active {
+
+    color: var(--text);
+
+}
+
+.main-nav a.active::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    right: 0;
+
+    bottom: -9px;
+
+    height: 2px;
+
+    background: var(--primary);
+
+}
+
+.sound-toggle {
+
+    width: 38px;
+
+    height: 38px;
+
+    display: grid;
+
+    place-items: center;
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    color: var(--text-secondary);
+
+    background: var(--surface);
+
+    transition:
+
+        border-color 160ms ease,
+
+        color 160ms ease,
+
+        background 160ms ease;
+
+}
+
+.sound-toggle:hover {
+
+    color: var(--primary);
+
+    border-color: var(--primary-muted);
+
+    background: var(--surface-elevated);
+
+}
+
+.sound-toggle.enabled {
+
+    color: var(--primary);
+
+}
+
+/* --------------------------------
+   Main Layout
+-------------------------------- */
+
+.app {
+
+    width: min(1400px, calc(100% - 64px));
+
+    min-height: calc(100vh - 72px);
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 1fr) 360px;
+
+    gap: 24px;
+
+    padding: 32px 0;
+
+}
+
+/* --------------------------------
+   Dice Section
+-------------------------------- */
+
+.dice-section {
+
+    min-height: calc(100vh - 136px);
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 28px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    background:
+
+        linear-gradient(
+
+            145deg,
+
+            rgba(29, 37, 39, 0.72),
+
+            rgba(15, 20, 21, 0.92)
+
+        );
+
+    box-shadow:
+
+        inset 0 1px rgba(255, 255, 255, 0.025),
+
+        0 20px 60px rgba(0, 0, 0, 0.25);
+
+}
+
+.dice-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    gap: 20px;
+
+}
+
+.eyebrow {
+
+    display: block;
+
+    color: var(--text-secondary);
+
+    font-family: var(--font-mono);
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.14em;
+
+}
+
+.dice-header h1 {
+
+    margin-top: 5px;
+
+    font-size: clamp(25px, 3vw, 34px);
+
+    line-height: 1.1;
+
+    letter-spacing: -0.04em;
+
+}
+
+.dice-type-label {
+
+    padding-top: 3px;
+
+    color: var(--primary);
+
+    font-family: var(--font-mono);
+
+    font-size: 10px;
+
+    letter-spacing: 0.08em;
+
+    text-align: right;
+
+}
+
+/* --------------------------------
+   Dice Stage
+-------------------------------- */
+
+.dice-stage {
+
+    flex: 1;
+
+    min-height: 360px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 20px;
+
+    padding: 40px 20px;
+
+}
+
+.die {
+
+    position: relative;
+
+    width: 112px;
+
+    height: 112px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: 1px solid #394547;
+
+    border-radius: 18px;
+
+    color: var(--text);
+
+    background:
+
+        linear-gradient(
+
+            145deg,
+
+            #252e30 0%,
+
+            #151b1d 55%,
+
+            #0e1314 100%
+
+        );
+
+    box-shadow:
+
+        inset 2px 2px 5px rgba(255, 255, 255, 0.035),
+
+        inset -3px -3px 8px rgba(0, 0, 0, 0.55),
+
+        0 18px 30px rgba(0, 0, 0, 0.42);
+
+    transform:
+
+        perspective(600px)
+
+        rotateX(0deg)
+
+        rotateY(0deg);
+
+    transition:
+
+        transform 120ms ease,
+
+        box-shadow 160ms ease;
+
+}
+
+.die::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 5px;
+
+    border: 1px solid rgba(255, 255, 255, 0.025);
+
+    border-radius: 14px;
+
+    pointer-events: none;
+
+}
+
+.die:hover {
+
+    box-shadow:
+
+        inset 2px 2px 5px rgba(255, 255, 255, 0.04),
+
+        inset -3px -3px 8px rgba(0, 0, 0, 0.55),
+
+        0 20px 36px rgba(0, 0, 0, 0.5);
+
+}
+
+/* --------------------------------
+   D4
+-------------------------------- */
+
+/* --------------------------------
+   D4
+-------------------------------- */
+
+.d4-die {
+    width: 112px;
+    height: 112px;
+
+    border: none;
+    border-radius: 0;
+
+    background: transparent;
+
+    box-shadow: none;
+
+    filter:
+        drop-shadow(0 18px 30px rgba(0, 0, 0, 0.42));
+
+    transition:
+        transform 120ms ease,
+        filter 160ms ease;
+}
+
+.d4-die::before {
+    content: "";
+
+    position: absolute;
+    inset: 6px;
+
+    clip-path: polygon(
+        50% 0%,
+        100% 100%,
+        0% 100%
+    );
+
+    background:
+        linear-gradient(
+            145deg,
+            #303a3c 0%,
+            #1b2527 52%,
+            #0e1314 100%
+        );
+
+    box-shadow:
+        inset 2px 2px 5px rgba(255, 255, 255, 0.035),
+        inset -3px -3px 8px rgba(0, 0, 0, 0.55);
+}
+
+.d4-die::after {
+    content: "";
+
+    position: absolute;
+    inset: 6px;
+
+    clip-path: polygon(
+        50% 0%,
+        100% 100%,
+        0% 100%
+    );
+
+    background:
+        linear-gradient(
+            160deg,
+            transparent 0%,
+            transparent 48%,
+            rgba(46, 196, 182, 0.10) 100%
+        );
+
+    pointer-events: none;
+}
+
+.d4-number {
+    position: relative;
+    z-index: 2;
+
+    margin-top: 20px;
+
+    color: var(--text);
+
+    font-family: var(--font-mono);
+    font-size: 28px;
+    font-weight: 600;
+
+    text-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.55);
+}
+
+/* --------------------------------
+   D6 Pips
+-------------------------------- */
+
+.pips {
+
+    width: 72px;
+
+    height: 72px;
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    grid-template-rows: repeat(3, 1fr);
+
+}
+
+.pip {
+
+    width: 13px;
+
+    height: 13px;
+
+    align-self: center;
+
+    justify-self: center;
+
+    border-radius: 50%;
+
+    background: #dce5e3;
+
+    box-shadow:
+
+        inset 1px 1px 2px rgba(255, 255, 255, 0.2),
+
+        0 1px 2px rgba(0, 0, 0, 0.5);
+
+}
+
+/* D6 positions */
+
+.pip.tl {
+
+    grid-column: 1;
+
+    grid-row: 1;
+
+}
+
+.pip.tc {
+
+    grid-column: 2;
+
+    grid-row: 1;
+
+}
+
+.pip.tr {
+
+    grid-column: 3;
+
+    grid-row: 1;
+
+}
+
+.pip.ml {
+
+    grid-column: 1;
+
+    grid-row: 2;
+
+}
+
+.pip.mc {
+
+    grid-column: 2;
+
+    grid-row: 2;
+
+}
+
+.pip.mr {
+
+    grid-column: 3;
+
+    grid-row: 2;
+
+}
+
+.pip.bl {
+
+    grid-column: 1;
+
+    grid-row: 3;
+
+}
+
+.pip.bc {
+
+    grid-column: 2;
+
+    grid-row: 3;
+
+}
+
+.pip.br {
+
+    grid-column: 3;
+
+    grid-row: 3;
+
+}
+
+/* --------------------------------
+   Non-D6 Dice
+-------------------------------- */
+
+.die-number {
+
+    position: relative;
+
+    z-index: 2;
+
+    font-family: var(--font-mono);
+
+    font-size: 31px;
+
+    font-weight: 600;
+
+}
+
+.die-sides {
+
+    position: absolute;
+
+    right: 11px;
+
+    bottom: 9px;
+
+    color: var(--text-secondary);
+
+    font-family: var(--font-mono);
+
+    font-size: 8px;
+
+}
+
+/* --------------------------------
+   Result
+-------------------------------- */
+
+.result-panel {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    min-height: 76px;
+
+    margin-top: auto;
+
+    padding: 14px 20px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: rgba(21, 27, 29, 0.85);
+
+}
+
+.result-formula {
+
+    flex: 1;
+
+    color: var(--text-secondary);
+
+    font-family: var(--font-mono);
+
+    font-size: 13px;
+
+}
+
+.result-total-label {
+
+    color: var(--text-secondary);
+
+    font-family: var(--font-mono);
+
+    font-size: 9px;
+
+    letter-spacing: 0.1em;
+
+}
+
+.result-total {
+
+    min-width: 72px;
+
+    color: var(--primary);
+
+    font-family: var(--font-mono);
+
+    font-size: 27px;
+
+    font-weight: 600;
+
+    text-align: right;
+
+}
+
+/* --------------------------------
+   Roll Button
+-------------------------------- */
+
+.roll-button {
+
+    width: 100%;
+
+    height: 58px;
+
+    margin-top: 14px;
+
+    border: 1px solid var(--primary);
+
+    border-radius: 8px;
+
+    color: #071211;
+
+    background: var(--primary);
+
+    font-family: var(--font-mono);
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.12em;
+
+    transition:
+
+        background 160ms ease,
+
+        transform 100ms ease,
+
+        box-shadow 160ms ease;
+
+}
+
+.roll-button:hover {
+
+    background: var(--primary-bright);
+
+    box-shadow: 0 0 24px rgba(46, 196, 182, 0.12);
+
+}
+
+.roll-button:active {
+
+    transform: translateY(1px);
+
+}
+
+.roll-button:disabled {
+
+    cursor: wait;
+
+    opacity: 0.8;
+
+}
+
+.roll-helper {
+
+    margin-top: 8px;
+
+    color: var(--text-secondary);
+
+    font-family: var(--font-mono);
+
+    font-size: 9px;
+
+    letter-spacing: 0.08em;
+
+    text-align: center;
+
+}
+
+/* --------------------------------
+   Controls
+-------------------------------- */
+
+.controls-section {
+
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 24px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    background: rgba(21, 27, 29, 0.72);
+
+}
+
+.control-group {
+
+    padding-bottom: 24px;
+
+    margin-bottom: 24px;
+
+    border-bottom: 1px solid var(--border);
+
+}
+
+.control-label-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 12px;
+
+}
+
+.control-label {
+
+    color: var(--text-secondary);
+
+    font-family: var(--font-mono);
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.1em;
+
+}
+
+.control-value {
+
+    color: var(--primary);
+
+    font-family: var(--font-mono);
+
+    font-size: 11px;
+
+}
+
+/* --------------------------------
+   Stepper
+-------------------------------- */
+
+.stepper {
+
+    height: 48px;
+
+    display: grid;
+
+    grid-template-columns: 48px 1fr 48px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    overflow: hidden;
+
+    background: var(--surface);
+
+}
+
+.stepper button {
+
+    color: var(--text-secondary);
+
+    background: transparent;
+
+    font-size: 22px;
+
+    transition:
+
+        color 160ms ease,
+
+        background 160ms ease;
+
+}
+
+.stepper button:hover {
+
+    color: var(--primary);
+
+    background: var(--surface-elevated);
+
+}
+
+.stepper span {
+
+    display: grid;
+
+    place-items: center;
+
+    border-left: 1px solid var(--border);
+
+    border-right: 1px solid var(--border);
+
+    color: var(--text);
+
+    font-family: var(--font-mono);
+
+    font-size: 14px;
+
+}
+
+/* --------------------------------
+   Face Selector
+-------------------------------- */
+
+.face-selector {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 6px;
+
+    margin-top: 12px;
+
+}
+
+.face-selector button {
+
+    height: 40px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 6px;
+
+    color: var(--text-secondary);
+
+    background: var(--surface);
+
+    font-family: var(--font-mono);
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    transition:
+
+        color 160ms ease,
+
+        border-color 160ms ease,
+
+        background 160ms ease;
+
+}
+
+.face-selector button:hover {
+
+    color: var(--text);
+
+    border-color: var(--primary-muted);
+
+}
+
+.face-selector button.selected {
+
+    color: var(--primary);
+
+    border-color: var(--primary);
+
+    background: rgba(46, 196, 182, 0.08);
+
+}
+
+/* --------------------------------
+   History
+-------------------------------- */
+
+.history-section {
+
+    flex: 1;
+
+    min-height: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+.history-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 14px;
+
+}
+
+.history-header button {
+
+    color: var(--text-secondary);
+
+    background: transparent;
+
+    font-family: var(--font-mono);
+
+    font-size: 9px;
+
+    letter-spacing: 0.08em;
+
+    transition: color 160ms ease;
+
+}
+
+.history-header button:hover {
+
+    color: var(--primary);
+
+}
+
+.history-list {
+
+    flex: 1;
+
+    overflow-y: auto;
+
+}
+
+.history-list::-webkit-scrollbar {
+
+    width: 4px;
+
+}
+
+.history-list::-webkit-scrollbar-thumb {
+
+    background: var(--border);
+
+    border-radius: 10px;
+
+}
+
+.history-item {
+
+    display: grid;
+
+    grid-template-columns: 34px 1fr auto;
+
+    gap: 10px;
+
+    align-items: center;
+
+    padding: 12px 0;
+
+    border-bottom: 1px solid rgba(42, 53, 55, 0.65);
+
+}
+
+.history-number {
+
+    color: var(--text-secondary);
+
+    font-family: var(--font-mono);
+
+    font-size: 9px;
+
+}
+
+.history-main {
+
+    min-width: 0;
+
+}
+
+.history-config {
+
+    color: var(--text-secondary);
+
+    font-family: var(--font-mono);
+
+    font-size: 9px;
+
+}
+
+.history-values {
+
+    margin-top: 3px;
+
+    color: var(--text);
+
+    font-family: var(--font-mono);
+
+    font-size: 11px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+}
+
+.history-total {
+
+    color: var(--primary);
+
+    font-family: var(--font-mono);
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+.history-empty {
+
+    padding: 32px 0;
+
+    color: var(--text-secondary);
+
+    font-family: var(--font-mono);
+
+    font-size: 10px;
+
+    line-height: 1.7;
+
+    text-align: center;
+
+}
+
+/* --------------------------------
+   Responsive
+-------------------------------- */
+
+@media (max-width: 1050px) {
+
+    .app {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .controls-section {
+
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 24px;
+
+    }
+
+    .history-section {
+
+        grid-column: 1 / -1;
+
+    }
+
+    .control-group {
+
+        margin-bottom: 0;
+
+    }
+
+}
+
+@media (max-width: 700px) {
+
+    .site-header {
+
+        height: 64px;
+
+        padding: 0 18px;
+
+    }
+
+    .main-nav {
+
+        gap: 18px;
+
+        margin-right: 12px;
+
+    }
+
+    .app {
+
+        width: min(100% - 24px, 700px);
+
+        padding: 12px 0;
+
+    }
+
+    .dice-section {
+
+        min-height: calc(100vh - 88px);
+
+        padding: 18px;
+
+    }
+
+    .dice-header {
+
+        flex-direction: column;
+
+    }
+
+    .dice-type-label {
+
+        text-align: left;
+
+    }
+
+    .dice-stage {
+
+        min-height: 300px;
+
+        gap: 12px;
+
+        padding: 25px 5px;
+
+    }
+
+    .die {
+
+        width: 88px;
+
+        height: 88px;
+
+        border-radius: 15px;
+
+    }
+
+    .pips {
+
+        width: 58px;
+
+        height: 58px;
+
+    }
+
+    .pip {
+
+        width: 10px;
+
+        height: 10px;
+
+    }
+
+    .die-number {
+
+        font-size: 25px;
+
+    }
+
+    .controls-section {
+
+        display: flex;
+
+        padding: 18px;
+
+    }
+
+    .control-group {
+
+        padding-bottom: 18px;
+
+        margin-bottom: 18px;
+
+    }
+
+    .result-panel {
+
+        gap: 10px;
+
+        padding: 12px;
+
+    }
+
+    .result-formula {
+
+        font-size: 11px;
+
+    }
+
+    .result-total {
+
+        min-width: 50px;
+
+        font-size: 23px;
+
+    }
+
+}
+
+@media (max-width: 430px) {
+
+    .main-nav a {
+
+        font-size: 12px;
+
+    }
+
+    .sound-toggle {
+
+        width: 34px;
+
+        height: 34px;
+
+    }
+
+    .dice-stage {
+
+        gap: 8px;
+
+    }
+
+    .die {
+
+        width: 76px;
+
+        height: 76px;
+
+    }
+
+    .pips {
+
+        width: 48px;
+
+        height: 48px;
+
+    }
+
+    .pip {
+
+        width: 8px;
+
+        height: 8px;
+
+    }
+
+}
