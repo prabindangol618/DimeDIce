@@ -59,24 +59,39 @@ function calculateTotal(values) {
 function createDie(value, index) {
     const die = document.createElement("div");
 
-    die.className = state.sides === 4 ? "die d4-die" : "die";
-    die.dataset.index = index;
-
     if (state.sides === 6) {
-        die.innerHTML = createPips(value);
-    } else if (state.sides === 4) {
-        die.innerHTML = `
-            <span class="d4-number">${value}</span>
-        `;
-    } else {
-        die.innerHTML = `
-            <span class="die-number">${value}</span>
-            <span class="die-sides">D${state.sides}</span>
-        `;
-    }
+        die.className = "die d6-die";
+        die.dataset.index = index;
 
-    return die;
-}
+        die.innerHTML = `
+            <div class="cube-face cube-front">
+                ${createPips(value)}
+            </div>
+
+            <div class="cube-face cube-back">
+                ${createPips(7 - value)}
+            </div>
+
+            <div class="cube-face cube-right">
+                ${createPips(2)}
+            </div>
+
+            <div class="cube-face cube-left">
+                ${createPips(5)}
+            </div>
+
+            <div class="cube-face cube-top">
+                ${createPips(3)}
+            </div>
+
+            <div class="cube-face cube-bottom">
+                ${createPips(4)}
+            </div>
+        `;
+
+        return die;
+    }
+}     
 
 function createPips(value) {
     const positions = {
@@ -209,7 +224,7 @@ function performRoll() {
         rollLabel.textContent = "ROLL";
         state.isRolling = false;
 
-    }, 560);
+    }, 420);
 }
 
 

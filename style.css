@@ -404,6 +404,8 @@ a {
 
     padding: 40px 20px;
 
+    perspective: 900px;
+
 }
 
 .die {
@@ -450,8 +452,6 @@ a {
 
     transform:
 
-        perspective(600px)
-
         rotateX(0deg)
 
         rotateY(0deg);
@@ -493,97 +493,6 @@ a {
 }
 
 /* --------------------------------
-   D4
--------------------------------- */
-
-/* --------------------------------
-   D4
--------------------------------- */
-
-.d4-die {
-    width: 112px;
-    height: 112px;
-
-    border: none;
-    border-radius: 0;
-
-    background: transparent;
-
-    box-shadow: none;
-
-    filter:
-        drop-shadow(0 18px 30px rgba(0, 0, 0, 0.42));
-
-    transition:
-        transform 120ms ease,
-        filter 160ms ease;
-}
-
-.d4-die::before {
-    content: "";
-
-    position: absolute;
-    inset: 6px;
-
-    clip-path: polygon(
-        50% 0%,
-        100% 100%,
-        0% 100%
-    );
-
-    background:
-        linear-gradient(
-            145deg,
-            #303a3c 0%,
-            #1b2527 52%,
-            #0e1314 100%
-        );
-
-    box-shadow:
-        inset 2px 2px 5px rgba(255, 255, 255, 0.035),
-        inset -3px -3px 8px rgba(0, 0, 0, 0.55);
-}
-
-.d4-die::after {
-    content: "";
-
-    position: absolute;
-    inset: 6px;
-
-    clip-path: polygon(
-        50% 0%,
-        100% 100%,
-        0% 100%
-    );
-
-    background:
-        linear-gradient(
-            160deg,
-            transparent 0%,
-            transparent 48%,
-            rgba(46, 196, 182, 0.10) 100%
-        );
-
-    pointer-events: none;
-}
-
-.d4-number {
-    position: relative;
-    z-index: 2;
-
-    margin-top: 20px;
-
-    color: var(--text);
-
-    font-family: var(--font-mono);
-    font-size: 28px;
-    font-weight: 600;
-
-    text-shadow:
-        0 2px 4px rgba(0, 0, 0, 0.55);
-}
-
-/* --------------------------------
    D6 Pips
 -------------------------------- */
 
@@ -621,6 +530,107 @@ a {
 
         0 1px 2px rgba(0, 0, 0, 0.5);
 
+}
+
+/* --------------------------------
+   D6 3D Cube
+-------------------------------- */
+
+.d6-die {
+    width: 112px;
+    height: 112px;
+
+    border: 1px solid #394547;
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #252e30 0%,
+            #151b1d 55%,
+            #0e1314 100%
+        );
+
+    box-shadow:
+        inset 2px 2px 5px rgba(255, 255, 255, 0.035),
+        inset -3px -3px 8px rgba(0, 0, 0, 0.55),
+        0 18px 30px rgba(0, 0, 0, 0.42);
+
+    transform-style: flat;
+}
+
+.d6-die:not(.rolling) .cube-face {
+    display: none;
+}
+
+.d6-die:not(.rolling) .cube-front {
+    display: flex;
+    position: absolute;
+    inset: 0;
+    transform: none;
+}
+
+.d6-die.rolling {
+    transform-style: preserve-3d;
+}
+
+.d6-die::before {
+    display: none;
+}
+
+.cube-face {
+    position: absolute;
+
+    width: 112px;
+    height: 112px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #394547;
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #252e30 0%,
+            #151b1d 55%,
+            #0e1314 100%
+        );
+
+    box-shadow:
+        inset 2px 2px 5px rgba(255, 255, 255, 0.035),
+        inset -3px -3px 8px rgba(0, 0, 0, 0.55);
+}
+
+.cube-front {
+    transform: translateZ(56px);
+}
+
+.cube-back {
+    transform: rotateY(180deg) translateZ(56px);
+}
+
+.cube-right {
+    transform: rotateY(90deg) translateZ(56px);
+}
+
+.cube-left {
+    transform: rotateY(-90deg) translateZ(56px);
+}
+
+.cube-top {
+    transform: rotateX(90deg) translateZ(56px);
+}
+
+.cube-bottom {
+    transform: rotateX(-90deg) translateZ(56px);
+}
+
+.d6-die .pips {
+    width: 72px;
+    height: 72px;
 }
 
 /* D6 positions */
@@ -1437,4 +1447,56 @@ a {
 
     }
 
+}
+
+/* --------------------------------
+   Dice Roll Animation
+-------------------------------- */
+
+.die.rolling {
+    animation: diceRoll 420ms cubic-bezier(0.2, 0.75, 0.25, 1);
+    will-change: transform;
+}
+
+@keyframes diceRoll {
+
+    0% {
+        transform:
+            translateY(0)
+            rotateX(0deg)
+            rotateY(0deg)
+            rotateZ(0deg);
+    }
+
+    25% {
+        transform:
+            translateY(-22px)
+            rotateX(120deg)
+            rotateY(90deg)
+            rotateZ(30deg);
+    }
+
+    55% {
+        transform:
+            translateY(-34px)
+            rotateX(260deg)
+            rotateY(200deg)
+            rotateZ(80deg);
+    }
+
+    80% {
+        transform:
+            translateY(-8px)
+            rotateX(340deg)
+            rotateY(310deg)
+            rotateZ(140deg);
+    }
+
+    100% {
+        transform:
+            translateY(0)
+            rotateX(360deg)
+            rotateY(360deg)
+            rotateZ(180deg);
+    }
 }
