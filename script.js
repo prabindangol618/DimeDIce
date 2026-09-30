@@ -5,12 +5,11 @@ const state = {
     values: [5, 6, 2],
     history: [],
     rollNumber: 0,
-    soundEnabled: false,
-    audioContext: null
 };
 
+const STORAGE_KEY = "dimedice-state";
+
 const sideLabels = {
-    4: "TETRAHEDRON · D4",
     6: "HEXAHEDRON · D6",
     8: "OCTAHEDRON · D8",
     10: "PENTAGONAL TRAPEZOHEDRON · D10",
@@ -36,9 +35,6 @@ const resultTotal = document.getElementById("result-total");
 const historyList = document.getElementById("history-list");
 const clearHistoryButton = document.getElementById("clear-history");
 
-const soundToggle = document.getElementById("sound-toggle");
-
-
 /* --------------------------------
    Helpers
 -------------------------------- */
@@ -51,6 +47,88 @@ function calculateTotal(values) {
     return values.reduce((sum, value) => sum + value, 0);
 }
 
+function saveState() {
+    const data = {
+        count: state.count,
+        sides: state.sides,
+        values: state.values,
+        history: state.history,
+        rollNumber: state.rollNumber,
+    };
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function loadState() {
+    const savedState = localStorage.getItem(STORAGE_KEY);
+
+    if (!savedState) return;
+
+    try {
+        const data = JSON.parse(savedState);
+
+        if (Number.isInteger(data.count) && data.count >= 1 && data.count <= 6) {
+            state.count = data.count;
+        }
+
+        if ([6, 8, 10, 12, 20].includes(data.sides)) {
+            state.sides = data.sides;
+        }
+
+        if (
+            Array.isArray(data.values) &&
+            data.values.length === state.count &&
+            data.values.every(
+                value => Number.isInteger(value) && value >= 1 && value <= state.sides
+            )
+        ) {
+            state.values = data.values;
+        } else {
+            state.values = Array.from(
+                { length: state.count },
+                () => randomValue(state.sides)
+            );
+        }
+
+        if (Array.isArray(data.history)) {
+            state.history = data.history.slice(0, 10);
+        }
+
+        if (Number.isInteger(data.rollNumber) && data.rollNumber >= 0) {
+            state.rollNumber = data.rollNumber;
+        }
+
+    } catch (error) {
+        console.warn("Could not load saved DimeDice state.");
+    }
+}
+
+function resetSavedData() {
+    localStorage.removeItem(STORAGE_KEY);
+
+    state.count = 3;
+    state.sides = 6;
+    state.values = Array.from(
+        { length: state.count },
+        () => randomValue(state.sides)
+    );
+    state.history = [];
+    state.rollNumber = 0;
+    state.isRolling = false;
+
+    updateDiceCount();
+
+    document.querySelectorAll("[data-sides]").forEach(button => {
+        button.classList.toggle(
+            "selected",
+            Number(button.dataset.sides) === state.sides
+        );
+    });
+
+    renderDice();
+    updateResult();
+    renderHistory();
+}
 
 /* --------------------------------
    Dice Rendering
@@ -91,7 +169,19 @@ function createDie(value, index) {
 
         return die;
     }
-}     
+
+    die.className = "die poly-die";
+    die.dataset.index = index;
+
+    die.innerHTML = `
+        <div class="poly-die-face">
+            <span class="die-number">${value}</span>
+            <span class="die-sides">D${state.sides}</span>
+        </div>
+    `;
+
+    return die;
+}
 
 function createPips(value) {
     const positions = {
@@ -161,6 +251,7 @@ function setDiceCount(count) {
     updateDiceCount();
     renderDice();
     updateResult();
+    saveState();
 }
 
 function setSides(sides) {
@@ -182,6 +273,7 @@ function setSides(sides) {
 
     renderDice();
     updateResult();
+    saveState();
 }
 
 
@@ -204,8 +296,6 @@ function performRoll() {
         die.classList.add("rolling");
     });
 
-    playRollSound();
-
     setTimeout(() => {
 
         state.values = Array.from(
@@ -216,6 +306,8 @@ function performRoll() {
         state.rollNumber++;
 
         addHistory();
+
+        saveState();
 
         renderDice();
         updateResult();
@@ -292,108 +384,10 @@ function renderHistory() {
 
 function clearHistory() {
     state.history = [];
+
     renderHistory();
+    saveState();
 }
-
-
-/* --------------------------------
-   Sound
--------------------------------- */
-
-function toggleSound() {
-    state.soundEnabled = !state.soundEnabled;
-
-    soundToggle.classList.toggle(
-        "enabled",
-        state.soundEnabled
-    );
-
-    const icon = soundToggle.querySelector(".material-symbols-outlined");
-
-    icon.textContent = state.soundEnabled
-        ? "volume_up"
-        : "volume_off";
-
-    if (state.soundEnabled) {
-        playClickSound();
-    }
-}
-
-function getAudioContext() {
-    if (!state.audioContext) {
-        state.audioContext = new (
-            window.AudioContext ||
-            window.webkitAudioContext
-        )();
-    }
-
-    return state.audioContext;
-}
-
-function playClickSound() {
-    if (!state.soundEnabled) return;
-
-    const ctx = getAudioContext();
-
-    const oscillator = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    oscillator.type = "sine";
-    oscillator.frequency.value = 180;
-
-    gain.gain.setValueAtTime(
-        0.04,
-        ctx.currentTime
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        0.001,
-        ctx.currentTime + 0.08
-    );
-
-    oscillator.connect(gain);
-    gain.connect(ctx.destination);
-
-    oscillator.start();
-    oscillator.stop(ctx.currentTime + 0.08);
-}
-
-function playRollSound() {
-    if (!state.soundEnabled) return;
-
-    const ctx = getAudioContext();
-
-    const oscillator = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    oscillator.type = "triangle";
-    oscillator.frequency.setValueAtTime(
-        140,
-        ctx.currentTime
-    );
-
-    oscillator.frequency.exponentialRampToValueAtTime(
-        65,
-        ctx.currentTime + 0.25
-    );
-
-    gain.gain.setValueAtTime(
-        0.05,
-        ctx.currentTime
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        0.001,
-        ctx.currentTime + 0.25
-    );
-
-    oscillator.connect(gain);
-    gain.connect(ctx.destination);
-
-    oscillator.start();
-    oscillator.stop(ctx.currentTime + 0.25);
-}
-
 
 /* --------------------------------
    Keyboard
@@ -447,16 +441,16 @@ rollButton.addEventListener("click", performRoll);
 
 clearHistoryButton.addEventListener("click", clearHistory);
 
-soundToggle.addEventListener("click", toggleSound);
-
-
 /* --------------------------------
    Initial State
 -------------------------------- */
 
-state.values = [5, 6, 2];
+state.values = [6, 6, 6];
+
+loadState();
 
 updateDiceCount();
+
 renderDice();
 updateResult();
 renderHistory();

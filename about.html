@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>About · DimeDice</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="site-header">
+    <a href="index.html" class="logo">
+        <span>Dime</span><strong>Dice</strong>
+    </a>
+
+    <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="about.html" class="active">About</a>
+    </nav>
+</header>
+
+
+    <main class="about-page">
+
+        <section class="about-hero">
+
+            <p class="eyebrow">ABOUT DIMEDICE</p>
+
+            <h1>
+                Dice rolling,<br>
+                without the clutter.
+            </h1>
+
+            <p class="about-intro">
+                DimeDice is a simple, customizable dice roller designed
+                to make rolling dice feel tactile, clear, and satisfying.
+            </p>
+
+        </section>
+
+
+        <section class="about-section">
+
+            <div class="about-section-heading">
+                <span class="section-number">01</span>
+
+                <h2>What is DimeDice?</h2>
+            </div>
+
+            <p>
+                DimeDice lets you roll multiple dice, choose different
+                dice types, and keep track of your recent rolls.
+                Everything is designed around a focused and distraction-free
+                rolling experience.
+            </p>
+
+        </section>
+
+
+        <section class="about-section">
+
+            <div class="about-section-heading">
+                <span class="section-number">02</span>
+
+                <h2>Features</h2>
+            </div>
+
+            <div class="feature-list">
+
+                <div class="feature-item">
+                    <span>01</span>
+                    <div>
+                        <h3>Multiple Dice</h3>
+                        <p>Roll between one and six dice at a time.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <span>02</span>
+                    <div>
+                        <h3>Multiple Dice Types</h3>
+                        <p>
+                            Choose from D6, D8, D10, D12, and D20.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <span>03</span>
+                    <div>
+                        <h3>Roll History</h3>
+                        <p>
+                            Keep track of your most recent rolls and results.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <span>04</span>
+                    <div>
+                        <h3>Keyboard Friendly</h3>
+                        <p>
+                            Press Space to roll without reaching for the mouse.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="about-section">
+
+            <div class="about-section-heading">
+                <span class="section-number">03</span>
+
+                <h2>Privacy &amp; Data</h2>
+            </div>
+
+            <p>
+                DimeDice does not require an account. Your dice preferences
+                and roll history are stored locally in your browser using
+                local storage.
+            </p>
+
+            <p>
+                This means your saved data stays on your device and is not
+                stored on a DimeDice server.
+            </p>
+
+        </section>
+
+
+        <section class="about-section reset-section">
+
+            <div class="about-section-heading">
+                <span class="section-number">04</span>
+
+                <h2>Reset Saved Data</h2>
+            </div>
+
+            <p>
+                Clear your saved dice preferences, roll history, and roll
+                number from this browser.
+            </p>
+
+            <button id="reset-data-button" class="reset-data-button">
+                RESET DATA
+            </button>
+
+        </section>
+
+    </main>
+
+
+    <footer class="site-footer">
+
+        <div>
+            <span>DimeDice</span>
+            <span>·</span>
+            <span>Roll something.</span>
+        </div>
+
+        <a
+            href="https://github.com/prabindangol618"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            GitHub · @prabindangol618
+        </a>
+
+    </footer>
+
+   <div id="reset-modal" class="reset-modal">
+
+    <div class="reset-modal-content">
+
+        <p class="reset-modal-label">RESET SAVED DATA</p>
+
+        <h2>Clear your saved data?</h2>
+
+        <p>
+            This will remove your saved dice preferences,
+            roll history, and roll number from this browser.
+        </p>
+
+        <div class="reset-modal-actions">
+            <button
+                type="button"
+                id="cancel-reset"
+                class="reset-modal-cancel"
+            >
+                CANCEL
+            </button>
+
+            <button
+                type="button"
+                id="confirm-reset"
+                class="reset-modal-confirm"
+            >
+                RESET DATA
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    const resetDataButton = document.getElementById("reset-data-button");
+    const resetModal = document.getElementById("reset-modal");
+    const cancelReset = document.getElementById("cancel-reset");
+    const confirmReset = document.getElementById("confirm-reset");
+
+    resetDataButton.addEventListener("click", () => {
+        resetModal.classList.add("open");
+    });
+
+    cancelReset.addEventListener("click", () => {
+        resetModal.classList.remove("open");
+    });
+
+    confirmReset.addEventListener("click", () => {
+        localStorage.removeItem("dimedice-state");
+        window.location.href = "index.html";
+    });
+
+    resetModal.addEventListener("click", (event) => {
+        if (event.target === resetModal) {
+            resetModal.classList.remove("open");
+        }
+    });
+</script>
+
+</body>
+</html>
